@@ -13,7 +13,6 @@ void ResolveDevice(uint8_t *mac, char *devname) {
         vTaskDelay(10/portTICK_RATE_MS);
         j++;
         if(j>100) {
-            USBSerial.printf("Master:I2c retring fetch for Device resolve\n");
             vTaskDelay(100/portTICK_RATE_MS);
             Wire.flush();
             Wire.beginTransmission(0x57); 
