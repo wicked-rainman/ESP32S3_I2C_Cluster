@@ -1,0 +1,8 @@
+#define SCAN_INTERVAL 2000
+#define ROLL_FIX_DELAY 5000
+#define BLUE_LIST_SIZE 8
+#define MAX_SSID_STORE_SIZE 200
+#define MAX_SSID_LENGTH 35
+#define LED 21
+#define BUTTON 9
+#define NUM_LEDS 1
