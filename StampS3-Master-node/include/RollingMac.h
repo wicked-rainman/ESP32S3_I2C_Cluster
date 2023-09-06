@@ -1,2 +1,2 @@
-#include <Arduino.h>
+#include <stdio.h>
 bool RollingMac(uint8_t);
