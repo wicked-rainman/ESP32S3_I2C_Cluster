@@ -1,5 +1,5 @@
 # ESP32S3_I2C_Cluster
-
+![Cluster](./images/cluster.jpg)
 An ESP32S3 I2C cluster that captures WiFi beacon packets and outputs records that allow for a Network map to be drawn using the .dot process. The cluster consists four nodes: 
 
 1. Performs a constant passive WiFi scan looking for netwoks.
