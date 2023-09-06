@@ -23,7 +23,7 @@ associated with the fixed Mac that relates to the visible home user SSID (This i
 As I'm only really interested in trying to draw network maps, the Master node performs a dedupe based on the concatenation of the first three Mac addresses in any beacon packets. 
 The dedupe "buffer" is in fact two  fifo buffers. One for real macs and the other for rollers. The rolling mac buffer is roughly four times bigger, because that seems to suit the local traffic I see.  
 
-I've had a go at doing this because people tend to pour scorn on folk making mini clusters, often saying it's a waste of time. Using M5StampS3 modules, this cluster seems to work well and it's cost about half the price of a Raspberry Pi. Thank God for RTOS and yes, I know my window needs a good clean.
+I've had a go at doing this because people tend to pour scorn on folk making mini clusters, often saying it's a waste of time. I think it's all about the use case. Using M5StampS3 modules, this cluster seems to work well and it's cost about half the price of a Raspberry Pi. Thank God for RTOS and yes, I know my window needs a good clean.
 
 -------------
 
