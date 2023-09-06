@@ -1,11 +1,12 @@
 # ESP32S3_I2C_Cluster
 
-An ESP32S3 I2C cluster that captures WiFi beacon packets and outputs records that allow for a Network map to be drawn using the .dot processor. The cluster consists four nodes that each perform a specific function:
+An ESP32S3 I2C cluster that captures WiFi beacon packets and outputs records that allow for a Network map to be drawn (I've been using the .dot processor
+and Gephi for the followon processing). The cluster consists of four nodes that each perform a specific function:
 
-* Constant passive WiFi scaning to look for local netwoks (Node 0x56).
-* Collection of WiFi beacon packets from any seen network (Node 0x55).
-* Maps any found Mac addresses to vendor OUI (Node 0x57).
-* (The master) polls each of the nodes for new data and outputs records accordingly.
+* Constant passive WiFi scaning to look for local netwoks. Associates Mac addresses with any SSID, and provides that resolution for the Master node (Node I2C address 0x56).
+* Collects WiFi beacon packets from any seen network and stores them in a ring buffer. These are deliverd to the Master on request (Node I2C address 0x55).
+* On request from the Master node, maps any found Mac addresses to vendor OUI. The OUI table is loaded using netcat to port 180 (Node I2C address 0x57)
+* Requests beacon Mac addresses, resolves OUI and SSID, then outputs the results on the serial port and as UDP broadcasts on port 5128. (I2C Master)
 
 Outside of my office window, I tend to see around 60 WiFi networks (Some hidden, some not). It's not much of a 
 performance guide, but tests show the I2C bus and the nodes easily keep up with the beacon generation rate. 
