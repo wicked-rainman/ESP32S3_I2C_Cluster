@@ -1,12 +1,15 @@
 # ESP32S3_I2C_Cluster
 
-An ESP32S3 I2C cluster that captures WiFi beacon packets and outputs records that allow for a Network map to be drawn (I've been using the .dot processor
+An ESP32S3 I2C cluster that captures WiFi beacon packets and outputs records that allow for a network map to be drawn (I've been using the .dot processor
 and Gephi for the followon processing). The cluster consists of four nodes that each perform a specific function:
 
-* Constant passive WiFi scaning to look for local netwoks. Associates Mac addresses with any SSID, and provides that resolution for the Master node (Node I2C address 0x56).
-* Collects WiFi beacon packets from any seen network and stores them in a ring buffer. These are deliverd to the Master on request (Node I2C address 0x55).
-* On request from the Master node, maps any found Mac addresses to vendor OUI. The OUI table is loaded using netcat to port 180 (Node I2C address 0x57)
-* Requests beacon Mac addresses, resolves OUI and SSID, then outputs the results on the serial port and as UDP broadcasts on port 5128. (I2C Master)
+* The first node performs constant passive WiFi scaning. When it finds a new network it stores the Mac address and SSID. An I2C ISR allows for the master node to ask it for a resolution of any Mac address it finds in a beacon packet. (Node I2C address 0x56)
+  
+* The second node collects WiFi beacon packets and stores them in a ring buffer. Another I2C ISR delivers the last but one beacon packet to the I2C master when requested (Node I2C address 0x55).
+  
+* The third node maps Mac OUIs to Vendors. Like the other "slave" nodes, the master can ask it to resolve a Mac to vendor through an ISR. A full OUI table is over 35,000 records. I've only been populating the internal OUI table with vendors I'v seen locally. This keeps the table size down to a managable level. The OUI table is volatile, so it's loaded onto the node using netcat to port 180 (Node I2C address 0x57)
+  
+* The last node requests beacon Mac addresses, resolves OUIs and SSIDs, then outputs the results on the serial port and as UDP broadcasts on port 5128. (This is the I2C Master)
 
 Outside of my office window, I tend to see around 60 WiFi networks (Some hidden, some not). It's not much of a 
 performance guide, but tests show the I2C bus and the nodes easily keep up with the beacon generation rate. 
@@ -14,8 +17,15 @@ Any drawn network diagrams tend to get bogged down with probes from rolling macs
 I tend to just filter these out (often by Vendor OUI).
 
 Many of the domestic APs seem to offer multiple WiFi networks for roving users. These devices tend to use a rolling Mac
-address that is similar to the advertised network's Mac. Where this is the case, the SSID for the roving network is
-associated with the fixed Mac that relates to the visible home user SSID.
+address that is similar to the advertised network's Mac (Eg. Bt-WiFi etc). Where this is the case, the SSID for the roving network is
+associated with the fixed Mac that relates to the visible home user SSID (This is done by the Network scanning node).
+
+As I'm only really interested in trying to draw network maps, the Master node performs a dedupe based on the concatenation of the first three Mac addresses in any beacon packets. 
+The dedupe "buffer" is in fact two  fifo buffers. One for real macs and the other for rollers. The rolling mac buffer is roughly four times bigger, because that seems to suit the local traffic I see.  
+
+I've had a go at doing this because people tend to pour scorn on folk making mini clusters, often saying it's a waste of time. Using M5StampS3 modules, this cluster seems to work well and it's cost about half the price of a Raspberry Pi. Thank God for RTOS and yes, I know my window needs a good clean.
+
+-------------
 
 <img src="https://github.com/wicked-rainman/ESP32S3_I2C_Cluster/blob/main/images/Cluster.jpg" width="400" align="center">
 
