@@ -7,7 +7,7 @@ and Gephi for the followon processing). The cluster consists of four nodes that 
   
 * The second node collects WiFi beacon packets and stores them in a ring buffer. Another I2C ISR delivers the last but one beacon packet to the I2C master when requested (Node I2C address 0x55).
   
-* The third node maps Mac OUIs to Vendors. Like the other "slave" nodes, the master can ask it to resolve a Mac to vendor through an ISR. A full OUI table is over 35,000 records. I've only been populating the internal OUI table with vendors I'v seen locally. This keeps the table size down to a managable level. The OUI table is volatile, so it's loaded onto the node using netcat to port 180 (Node I2C address 0x57)
+* The third node maps Mac OUIs to Vendors. Like the other "slave" nodes, the master can ask it to resolve a Mac to vendor through an ISR. A full OUI table is over 35,000 records. I've only been populating the internal OUI table with vendors I've seen locally. This keeps the table size down to a managable level. The OUI table is volatile, so it's loaded onto the node using netcat to port 180 (Node I2C address 0x57)
   
 * The last node requests beacon Mac addresses, resolves OUIs and SSIDs, then outputs the results on the serial port and as UDP broadcasts on port 5128. (This is the I2C Master)
 
