@@ -61,6 +61,8 @@ sequenceDiagram
 5. The Master then sends the ADDR1 mac address to the WiFi node.
 6. The WiFi node looks the Mac address up to see if it's seen an association with an SSID. If found, an SSID string is returned or the value NET_Unk. Macs can be short (Middle four bytes) or long (All 6 bytes). This helps with the resolution of public access points where a rolling mac address is associated with a publically available SSID (Such as Virgin_Media, BT-WiFi Etc). In this instance, the real home SSID is returned.
 
+This process is repeated for ADDR2 and (if it's different from ADDR2) ADDR3.
+
 ### Data output format
 
 The master node generates a single CSV type record for each unique beacon packet it sees (In this instance, unique means the concatenation of the first three Mac addresses extracted from the beacon packet have not been seen before). The output format is as follows:
